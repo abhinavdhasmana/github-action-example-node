@@ -15,11 +15,11 @@ action "build" {
 action "lint" {
   needs = "build"
   uses  = "actions/npm@master"
-  args  = "lint"
+  args  = "run lint"
 }
 
 action "test" {
   needs = "build"
   uses  = "actions/npm@master"
-  args  = "test"
+  args  = "run test"
 }
