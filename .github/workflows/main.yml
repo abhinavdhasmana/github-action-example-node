@@ -5,40 +5,47 @@ jobs:
     name: npm install
     runs-on: ubuntu-latest
     steps:
-      -uses: actions/npm@master
-      -args: install
+      uses: actions/npm@master
+      with:
+        args: install
   lint:
     name: npm lint
     needs: install
     runs-on: ubuntu-latest
     steps:
-      -uses: actions/npm@master
-      -args: run lint
+      uses: actions/npm@master
+      with:
+        args: run lint
   test:
     name: npm test
     needs: install
     runs-on: ubuntu-latest
     steps:
-      -uses: actions/npm@master
-      -args: run test
+      uses: actions/npm@master
+      with:
+        args: run test
   docker-build:
     name: docker build
     needs: [test, lint]
     runs-on: ubuntu-latest
     steps:
-      -uses: actions/docker/cli@master
-      -args: build -t abhinavdhasmana/github-action-example-node .
+      uses: actions/docker/cli@master
+      with:
+        args: build -t abhinavdhasmana/github-action-example-node .
   docker-login:
     name: docker login
     needs: [test, lint]
     runs-on: ubuntu-latest
     steps:
-      -uses: actions/docker/cli@master
-      secrets: [DOCKER_USERNAME, DOCKER_PASSWORD]
+      uses: actions/docker/cli@master
+      with:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   docker-push:
     name: docker push
     needs: docker-build
     runs-on: ubuntu-latest
     steps:
-      -uses: actions/docker/cli@master
-      -args: push abhinavdhasmana/github-action-example-node
+      uses: actions/docker/cli@master
+      with:
+        args: push abhinavdhasmana/github-action-example-node
