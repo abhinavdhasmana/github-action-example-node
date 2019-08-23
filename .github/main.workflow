@@ -40,6 +40,10 @@ action "docker login" {
     "DOCKER_USERNAME",
     "DOCKER_PASSWORD"
   ]
+
+  needs   = [
+    "docker build"
+  ]
 }
 
 action "docker push" {
