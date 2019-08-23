@@ -2,24 +2,33 @@ workflow "npm build, lint, test and publish" {
   on       = "push"
 
   resolves = [
-    "lint",
-    "test"
+    "docker build"
   ]
 }
 
-action "build" {
+action "npm install" {
   uses = "actions/npm@master"
   args = "install"
 }
 
-action "lint" {
-  needs = "build"
+action "npm lint" {
+  needs = "npm install"
   uses  = "actions/npm@master"
   args  = "run lint"
 }
 
-action "test" {
-  needs = "build"
+action "npm test" {
+  needs = "npm install"
   uses  = "actions/npm@master"
   args  = "run test"
+}
+
+action "docker build" {
+  uses  = "actions/docker/cli@master"
+  args  = "build -t abhinavdhasmana/github-action-example-node ."
+
+  needs = [
+    "npm lint",
+    "npm test"
+  ]
 }
