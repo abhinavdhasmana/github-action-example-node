@@ -1,0 +1,44 @@
+name: A workflow to test, build and deploy a sample node.js app
+on: push
+jobs:
+  install:
+    name: npm install
+    runs-on: ubuntu-latest
+    steps:
+      -uses: actions/npm@master
+      -args: install
+  lint:
+    name: npm lint
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      -uses: actions/npm@master
+      -args: run lint
+  test:
+    name: npm test
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      -uses: actions/npm@master
+      -args: run test
+  docker-build:
+    name: docker build
+    needs: [test, lint]
+    runs-on: ubuntu-latest
+    steps:
+      -uses: actions/docker/cli@master
+      -args: build -t abhinavdhasmana/github-action-example-node .
+  docker-login:
+    name: docker login
+    needs: [test, lint]
+    runs-on: ubuntu-latest
+    steps:
+      -uses: actions/docker/cli@master
+      secrets: [DOCKER_USERNAME, DOCKER_PASSWORD]
+  docker-push:
+    name: docker push
+    needs: docker-build
+    runs-on: ubuntu-latest
+    steps:
+      -uses: actions/docker/cli@master
+      -args: push abhinavdhasmana/github-action-example-node
