@@ -1,7 +1,7 @@
 on: push
 name: npm build, lint, test and publish
 jobs:
-  build and publish:
+  build-and-publish:
     name: build and publish
     runs-on: ubuntu-latest
     steps:
