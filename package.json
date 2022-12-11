@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/abhinavdhasmana/github-action-example-node#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "http-errors": "^1.7.3",
     "jest": "^24.9.0",
     "supertest": "^4.0.2"
